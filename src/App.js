@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import Todos from "./components/todos";
+import {listTodos} from "./api";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+    const [todos, setTodos] = useState({});
+    const fetchTodos = async () => {
+        const res = await listTodos();
+        console.log(res.data);
+        setTodos(res.data);
+    };
+    const cb = () => {
+        fetchTodos().then().catch();
+    };
+    useEffect(cb, [true]);
+    return (<div>
+        <Todos fetchTodos={fetchTodos} todos={todos}/>
+    </div>);
 }
-
-export default App;
